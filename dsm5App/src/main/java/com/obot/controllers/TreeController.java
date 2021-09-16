@@ -7,36 +7,32 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.obot.models.Tree;
 import com.obot.repos.TreeRepo;
 
 @RestController
+@RequestMapping("/tree")
 public class TreeController {
 
 	@Autowired
 	TreeRepo treeRepo;
 	
-	@GetMapping("/hello")
-	public String hello() {
-		return "Hi";
-	}
-	
-	@GetMapping("/trees")
+	@GetMapping
 	public List<Tree> getTrees(){
 		return treeRepo.findAll();
 	}
 	
-	@PostMapping("/tree")
+	@PostMapping
 	public void makeTree(@RequestBody Tree tree) {
 		treeRepo.save(tree);
 	}
 	
-	@DeleteMapping("/tree/{id}")
-	public void deleteTree(@RequestParam String id) {
-		treeRepo.deleteById(id);
+	@DeleteMapping
+	public void deleteTree(@RequestBody Tree tree) {
+		treeRepo.delete(tree);
 	}
 	
 }
