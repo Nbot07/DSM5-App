@@ -19,7 +19,6 @@ import lombok.Setter;
 public class Tree {
 	
 	@Id
-	String id;
 	String name;
 	
 	@OneToOne(cascade = CascadeType.ALL)
