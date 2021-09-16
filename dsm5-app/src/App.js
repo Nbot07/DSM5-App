@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 
-class TodoApp extends React.Component {
+class DSM5App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items: [], text: '' };
@@ -13,7 +13,7 @@ class TodoApp extends React.Component {
     return (
       <div>
         <h3>Trees</h3>
-        <TodoList items={this.state.items} />
+        <TreeList items={this.state.items} />
         <form onSubmit={this.handleSubmit}>
           <label htmlFor="new-todo">
             Type in new tree name
@@ -51,7 +51,7 @@ class TodoApp extends React.Component {
   }
 }
 
-class TodoList extends React.Component {
+class TreeList extends React.Component {
   render() {
     return (
       <ul>
@@ -65,7 +65,7 @@ class TodoList extends React.Component {
 
 function App() {
   return (
-    <TodoApp />
+    <DSM5App />
   );
 }
 
