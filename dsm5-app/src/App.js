@@ -18,13 +18,13 @@ class DSM5App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     axios
       .get(`${api}/tree`)
-      .then((response) => this.setItems(response.data))
+      .then((response) => this.initItems(response.data))
       .catch((error) => {
         console.error(error);
       });
   }
 
-  setItems(data){
+  initItems(data){
     data.forEach(tree => {
       const newItem = {
         text: tree.name,
@@ -78,6 +78,17 @@ class DSM5App extends React.Component {
       items: state.items.concat(newItem),
       text: ''
     }));
+
+    axios.post(api + "/tree", {
+      name:newItem.text
+    })
+    .then(resp => {
+        console.log(resp.data);
+        console.log("tree saved succesfully")
+    })
+    .catch(error => {
+        console.log("error")
+    })
   }
 }
 
