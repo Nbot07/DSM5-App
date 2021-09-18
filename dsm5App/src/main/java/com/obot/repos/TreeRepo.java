@@ -6,4 +6,6 @@ import com.obot.models.Tree;
 
 public interface TreeRepo extends JpaRepository<Tree, String> {
 
+	Tree getByName(String name);
+
 }

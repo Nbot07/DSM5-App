@@ -97,7 +97,11 @@ class TreeList extends React.Component {
     return (
       <ul>
         {this.props.items.map(item => (
-          <li key={item.id}>{item.text}</li>
+          <li key={item.id}>
+            <a href= {api+"/tree/"+item.text}>
+              {item.text}
+            </a>
+          </li>
         ))}
       </ul>
     );
