@@ -9,7 +9,7 @@ import axios from "axios";
 
 // //app.use(cors())
 
-//var api = "http://localhost:8081"
+var api = "http://localhost:8081"
 class DSM5App extends React.Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,7 @@ class DSM5App extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     axios
-      .get("http://localhost:8081/tree") //`${this.api}/tree`)
+      .get(`${api}/tree`)
       .then((response) => this.setItems(response.data))
       .catch((error) => {
         console.error(error);
@@ -25,7 +25,16 @@ class DSM5App extends React.Component {
   }
 
   setItems(data){
-    data.forEach(tree => {console.log(tree)
+    data.forEach(tree => {
+      const newItem = {
+        text: tree.name,
+        id: Date.now()
+      }
+
+      this.setState(state => ({
+      items: state.items.concat(newItem),
+      text: ''
+    }))
       
     });
   }
