@@ -1,12 +1,33 @@
 import './App.css';
 import React from 'react';
+import axios from "axios";
 
+// var express = require('express')
+// var cors = require('cors')
+
+// var app = express()
+
+// //app.use(cors())
+
+//var api = "http://localhost:8081"
 class DSM5App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { items: [], text: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    axios
+      .get("http://localhost:8081/tree") //`${this.api}/tree`)
+      .then((response) => this.setItems(response.data))
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+
+  setItems(data){
+    data.forEach(tree => {console.log(tree)
+      
+    });
   }
 
   render() {
