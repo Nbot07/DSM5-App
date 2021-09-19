@@ -16,6 +16,7 @@ class DSM5App extends React.Component {
     this.state = { items: [], text: '' };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this)
     axios
       .get(`${api}/tree`)
       .then((response) => this.initItems(response.data))
@@ -44,17 +45,20 @@ class DSM5App extends React.Component {
       <div>
         <h3>Trees</h3>
         <TreeList items={this.state.items} />
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <label htmlFor="new-todo">
-            Type in new tree name
+            Type in tree name
           </label>
           <input
             id="new-todo"
             onChange={this.handleChange}
             value={this.state.text}
           />
-          <button>
+          <button onClick={this.handleSubmit}>
             Create Tree #{this.state.items.length + 1}
+          </button>
+          <button onClick={this.handleDelete}>
+            Delete Tree
           </button>
         </form>
       </div>
@@ -87,8 +91,22 @@ class DSM5App extends React.Component {
         console.log("tree saved succesfully")
     })
     .catch(error => {
-        console.log("error")
+        console.log("error failed to save tree")
     })
+  }
+
+  handleDelete(e){
+    e.preventDefault()
+    var text = this.state.text
+    axios.delete(api + "/tree/"+text,)
+    .then(resp => {
+      console.log(resp.data);
+      console.log("tree deleted succesfully")
+    })
+    .catch(error => {
+        console.log("error failed to delete tree")
+    })
+    window.location.reload();
   }
 }
 

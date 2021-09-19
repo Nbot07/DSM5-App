@@ -30,7 +30,6 @@ public class TreeController {
 	
 	@RequestMapping("/{name}")
 	public Tree getTree(@PathVariable String name) {
-		System.out.println(name);
 		return treeRepo.getByName(name);
 	}
 	
@@ -39,9 +38,9 @@ public class TreeController {
 		treeRepo.save(tree);
 	}
 	
-	@DeleteMapping
-	public void deleteTree(@RequestBody Tree tree) {
-		treeRepo.delete(tree);
+	@DeleteMapping("/{name}")
+	public void deleteTree(@PathVariable String name) {
+		treeRepo.delete(getTree(name));
 	}
 	
 }
