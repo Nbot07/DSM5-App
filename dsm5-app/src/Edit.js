@@ -1,9 +1,13 @@
 import { useParams } from "react-router";
+import EditChart from "./edit-chart/edit-chart";
 
 const Edit = () => {
     const { name } = useParams();
     return ( 
-        <h1>Edit Page for { name }</h1>
+        <>
+        <h2>Edit Page for { name } Tree</h2>
+            <EditChart/>
+        </>
      );
 }
  
