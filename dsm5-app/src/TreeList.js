@@ -5,8 +5,13 @@ const TreeList = ({items}) => {
         <ul>
         {items.map(item => (
           <li key={item.id}>
-            <Link to= {"/Edit/"+item.text}>
-              {item.text}
+              {item.text + " "}
+            <Link to= {"/node/"+item.text}>
+              view
+            </Link>
+                /
+            <Link to= {"/edit/"+item.text}>
+              edit
             </Link>
           </li>
         ))}
