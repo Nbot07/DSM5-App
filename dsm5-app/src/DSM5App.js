@@ -50,6 +50,7 @@ class DSM5App extends React.Component {
           <button onClick={this.handleSubmit}>
             Create Tree #{this.state.items.length + 1}
           </button>
+          :
           <button onClick={this.handleDelete}>
             Delete Tree
           </button>
