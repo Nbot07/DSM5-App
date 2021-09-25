@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import JSONDigger from "json-digger";
 import { v4 as uuidv4 } from "uuid";
 import OrganizationChart from "../components/ChartContainer";
@@ -7,73 +7,10 @@ import axios from "axios";
 import { useParams } from "react-router";
 
 var api = "http://localhost:8081"
-const EditChart = () => {
-  const { name } = useParams();
+const EditChart = ({treeName}) => {
   const orgchart = useRef();
-  axios
-  .get(`${api}/tree/`+name)
-  .then((response) => initItems(response.data))
-  .catch((error) => {
-    console.error(error);
-  });
-
-  const initItems = (tree) => {
-    console.log("tree.root = " + tree.root)
-      if (tree.root === null){}
-      else{
-        var myNode = tree.root
-        // while(myNode !== null){
-        //   axios
-        //   .get(api+"/node/"+myNode.id)
-        //   .then((response) => {
-        //     if(response.data !== null){
-        //       console.log(response.data.description)
-        //     }
-        //     myNode = response.data
-        //   })
-        //   .catch((error) => {
-        //     console.error(error)
-        //   })
-        // }
-      }
-  }
 
   const datasource = {}
-  // const datasource = {
-  //   id: "n1",
-  //   name: "Lao Lao",
-  //   title: "general manager",
-  //   children: [
-  //     { id: "n2", name: "Bo Miao", title: "department manager" },
-  //     {
-  //       id: "n3",
-  //       name: "Su Miao",
-  //       title: "department manager",
-  //       children: [
-  //         { id: "n4", name: "Tie Hua", title: "senior engineer" },
-  //         {
-  //           id: "n5",
-  //           name: "Hei Hei",
-  //           title: "senior engineer",
-  //           children: [
-  //             { id: "n6", name: "Dan Dan", title: "engineer" },
-  //             { id: "n7", name: "Xiang Xiang", title: "engineer" }
-  //           ]
-  //         },
-  //         { id: "n8", name: "Pang Pang", title: "senior engineer" }
-  //       ]
-  //     },
-  //     { id: "n9", name: "Hong Miao", title: "department manager" },
-  //     {
-  //       id: "n10",
-  //       name: "Chun Miao",
-  //       title: "department manager",
-  //       children: [{ id: "n11", name: "Yue Yue", title: "senior engineer" }]
-  //     }
-  //   ]
-  // }
-
-
   const [ds, setDS] = useState(datasource);
   const dsDigger = new JSONDigger(ds, "id", "children");
 
@@ -81,6 +18,47 @@ const EditChart = () => {
   const [newNodes, setNewNodes] = useState([{ name: "", title: "" }]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isMultipleSelect, setIsMultipleSelect] = useState(false);
+
+  console.log("treeName = "+ treeName )
+  useEffect(() => {
+    axios
+    .get(`${api}/tree/`+treeName)
+    .then((response) => { 
+      console.log("getting tree in edit-chart")
+      console.log(response)
+      console.log(response.data)
+      initItems(response.data)
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  
+    
+  
+    const initItems = (tree) => {
+      console.log("tree.root = " + tree.root)
+        if (!tree.root){ console.log("The root node is "+tree.root)}
+        else{
+          var myNode = tree.root
+          myNode.children = []
+          //Object.assign(datasource, myNode)
+          setDS(myNode) //causes infinite loop
+          // while(myNode !== null){
+          //   axios
+          //   .get(api+"/node/"+myNode.id)
+          //   .then((response) => {
+          //     if(response.data !== null){
+          //       console.log(response.data.description)
+          //     }
+          //     myNode = response.data
+          //   })
+          //   .catch((error) => {
+          //     console.error(error)
+          //   })
+          // }
+        }
+    }
+  }, [])
 
   const readSelectedNode = nodeData => {
     console.log("reding selectedNode "+nodeData)
@@ -159,8 +137,8 @@ const EditChart = () => {
     .post(api+"/node",{name:{...dsDigger.ds}.name, "title":{...dsDigger.ds}.title })
     .then(response =>{ 
       console.log(response.data)
-      axios.post(api+"/tree/"+name+"/"+response.data)
-      .then(console.log("set root of "+ name+ "to Node "+ response.data))
+      axios.post(api+"/tree/"+treeName+"/"+response.data)
+      .then(console.log("set root of "+ treeName+ "to Node "+ response.data))
       .catch(error => console.log(error))
       console.log("saved root node")
     })

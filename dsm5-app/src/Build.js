@@ -6,7 +6,7 @@ const Build = () => {
     return ( 
         <>
         <h2>Build Page for { name } Tree</h2>
-            <EditChart name={name}/>
+            <EditChart treeName={name}/>
         </>
      );
 }
