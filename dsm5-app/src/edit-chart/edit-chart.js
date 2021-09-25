@@ -3,42 +3,77 @@ import JSONDigger from "json-digger";
 import { v4 as uuidv4 } from "uuid";
 import OrganizationChart from "../components/ChartContainer";
 import "./edit-chart.css";
+import axios from "axios";
+import { useParams } from "react-router";
 
+var api = "http://localhost:8081"
 const EditChart = () => {
+  const { name } = useParams();
   const orgchart = useRef();
-  const datasource = {
-    id: "n1",
-    name: "Lao Lao",
-    title: "general manager",
-    children: [
-      { id: "n2", name: "Bo Miao", title: "department manager" },
-      {
-        id: "n3",
-        name: "Su Miao",
-        title: "department manager",
-        children: [
-          { id: "n4", name: "Tie Hua", title: "senior engineer" },
-          {
-            id: "n5",
-            name: "Hei Hei",
-            title: "senior engineer",
-            children: [
-              { id: "n6", name: "Dan Dan", title: "engineer" },
-              { id: "n7", name: "Xiang Xiang", title: "engineer" }
-            ]
-          },
-          { id: "n8", name: "Pang Pang", title: "senior engineer" }
-        ]
-      },
-      { id: "n9", name: "Hong Miao", title: "department manager" },
-      {
-        id: "n10",
-        name: "Chun Miao",
-        title: "department manager",
-        children: [{ id: "n11", name: "Yue Yue", title: "senior engineer" }]
+  axios
+  .get(`${api}/tree/`+name)
+  .then((response) => initItems(response.data))
+  .catch((error) => {
+    console.error(error);
+  });
+
+  const initItems = (tree) => {
+    console.log("tree.root = " + tree.root)
+      if (tree.root === null){}
+      else{
+        var myNode = tree.root
+        // while(myNode !== null){
+        //   axios
+        //   .get(api+"/node/"+myNode.id)
+        //   .then((response) => {
+        //     if(response.data !== null){
+        //       console.log(response.data.description)
+        //     }
+        //     myNode = response.data
+        //   })
+        //   .catch((error) => {
+        //     console.error(error)
+        //   })
+        // }
       }
-    ]
-  };
+  }
+
+  const datasource = {}
+  // const datasource = {
+  //   id: "n1",
+  //   name: "Lao Lao",
+  //   title: "general manager",
+  //   children: [
+  //     { id: "n2", name: "Bo Miao", title: "department manager" },
+  //     {
+  //       id: "n3",
+  //       name: "Su Miao",
+  //       title: "department manager",
+  //       children: [
+  //         { id: "n4", name: "Tie Hua", title: "senior engineer" },
+  //         {
+  //           id: "n5",
+  //           name: "Hei Hei",
+  //           title: "senior engineer",
+  //           children: [
+  //             { id: "n6", name: "Dan Dan", title: "engineer" },
+  //             { id: "n7", name: "Xiang Xiang", title: "engineer" }
+  //           ]
+  //         },
+  //         { id: "n8", name: "Pang Pang", title: "senior engineer" }
+  //       ]
+  //     },
+  //     { id: "n9", name: "Hong Miao", title: "department manager" },
+  //     {
+  //       id: "n10",
+  //       name: "Chun Miao",
+  //       title: "department manager",
+  //       children: [{ id: "n11", name: "Yue Yue", title: "senior engineer" }]
+  //     }
+  //   ]
+  // }
+
+
   const [ds, setDS] = useState(datasource);
   const dsDigger = new JSONDigger(ds, "id", "children");
 
@@ -48,6 +83,7 @@ const EditChart = () => {
   const [isMultipleSelect, setIsMultipleSelect] = useState(false);
 
   const readSelectedNode = nodeData => {
+    console.log("reding selectedNode "+nodeData)
     if (isMultipleSelect) {
       setSelectedNodes(prev => new Set(prev.add(nodeData)));
     } else {
@@ -56,24 +92,35 @@ const EditChart = () => {
   };
 
   const clearSelectedNode = () => {
+    console.log("clearing selected node")
     setSelectedNodes(new Set());
   };
 
   const onNameChange = (e, index) => {
+    console.log("onNameChange(e.target.value, index) (" +
+      e.target.value + 
+      ", " + index + 
+      ")")
     newNodes[index].name = e.target.value;
     setNewNodes([...newNodes]);
   };
 
   const onTitleChange = (e, index) => {
+    console.log("onTitleChange(e.target.value, index) (" +
+      e.target.value + 
+      ", " + index + 
+      ")")
     newNodes[index].title = e.target.value;
     setNewNodes([...newNodes]);
   };
 
   const addNewNode = () => {
+    console.log("adding newNodes")
     setNewNodes(prevNewNodes => [...prevNewNodes, { name: "", title: "" }]);
   };
 
   const removeNewNode = index => {
+    console.log("removing newNode " + index)
     setNewNodes(prevNewNodes => {
       prevNewNodes.splice(index, 1);
       return [...prevNewNodes];
@@ -81,6 +128,7 @@ const EditChart = () => {
   };
 
   const getNewNodes = () => {
+    console.log("getting newNodes")
     const nodes = [];
     for (const node of newNodes) {
       nodes.push({ ...node, id: uuidv4() });
@@ -89,31 +137,47 @@ const EditChart = () => {
   };
 
   const addChildNodes = async () => {
+    console.log("adding ChildNodes")
     await dsDigger.addChildren([...selectedNodes][0].id, getNewNodes());
     setDS({ ...dsDigger.ds });
   };
 
   const addSiblingNodes = async () => {
+    console.log("adding SiblingNodes")
     await dsDigger.addSiblings([...selectedNodes][0].id, getNewNodes());
     setDS({ ...dsDigger.ds });
   };
 
   const addRootNode = () => {
+    console.log("adding RootNode")
     dsDigger.addRoot(getNewNodes()[0]);
     setDS({ ...dsDigger.ds });
+    console.log({...dsDigger.ds})
+    console.log({...dsDigger.ds}.name)
+    console.log({...dsDigger.ds}.title)
+    axios
+    .post(api+"/node",{name:{...dsDigger.ds}.name, "title":{...dsDigger.ds}.title })
+    .then(response =>{ 
+      console.log(response)
+      console.log("saved root node")
+    })
+    .catch(error => console.log(error))
   };
 
   const remove = async () => {
+    console.log("calling remove")
     await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
     setDS({ ...dsDigger.ds });
     setSelectedNodes(new Set());
   };
 
   const onMultipleSelectChange = e => {
+    console.log("onMultipleSelectChange")
     setIsMultipleSelect(e.target.checked);
   };
 
   const onModeChange = e => {
+    console.log("onModeChange")
     setIsEditMode(e.target.checked);
     if (e.target.checked) {
       orgchart.current.expandAllNodes();

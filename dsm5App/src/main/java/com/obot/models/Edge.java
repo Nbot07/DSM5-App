@@ -23,10 +23,10 @@ public class Edge {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	int id;
 	String answer;
-	@ManyToOne
-	@JoinColumn(name="node_id")
-	Node parent;
-	@ManyToOne
-	@JoinColumn(name="node_id", insertable=false, updatable=false)
-	Node child;
+//	@ManyToOne
+//	@JoinColumn(name="node_id")
+//	Node parent;
+//	@ManyToOne
+//	@JoinColumn(name="node_id", insertable=false, updatable=false)
+//	Node child;
 }
