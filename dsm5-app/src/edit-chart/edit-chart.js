@@ -158,7 +158,10 @@ const EditChart = () => {
     axios
     .post(api+"/node",{name:{...dsDigger.ds}.name, "title":{...dsDigger.ds}.title })
     .then(response =>{ 
-      console.log(response)
+      console.log(response.data)
+      axios.post(api+"/tree/"+name+"/"+response.data)
+      .then(console.log("set root of "+ name+ "to Node "+ response.data))
+      .catch(error => console.log(error))
       console.log("saved root node")
     })
     .catch(error => console.log(error))

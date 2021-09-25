@@ -22,8 +22,8 @@ public class NodeController {
 	NodeRepo nodeRepo;
 	
 	@PostMapping
-	public void makeNode(@RequestBody Node node) {
-		nodeRepo.save(node);
+	public int makeNode(@RequestBody Node node) {
+		return nodeRepo.save(node).getId();
 	}
 	
 	@GetMapping

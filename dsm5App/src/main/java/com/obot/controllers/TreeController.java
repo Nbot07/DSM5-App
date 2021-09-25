@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.obot.models.Tree;
+import com.obot.repos.NodeRepo;
 import com.obot.repos.TreeRepo;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -22,6 +23,8 @@ public class TreeController {
 
 	@Autowired
 	TreeRepo treeRepo;
+	@Autowired
+	NodeRepo nodeRepo;
 	
 	@GetMapping
 	public List<Tree> getTrees(){
@@ -36,6 +39,13 @@ public class TreeController {
 	@PostMapping
 	public void makeTree(@RequestBody Tree tree) {
 		treeRepo.save(tree);
+	}
+	
+	@RequestMapping("/{name}/{id}")
+	public void setRoot(@PathVariable String name, @PathVariable int id) {
+		Tree temp = getTree(name);
+		temp.setRoot(nodeRepo.getById(id));
+		makeTree(temp);
 	}
 	
 	@DeleteMapping("/{name}")
