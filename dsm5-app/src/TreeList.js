@@ -7,11 +7,15 @@ const TreeList = ({items}) => {
           <li key={item.id}>
               {item.text + " "}
             <Link to= {"/node/"+item.text}>
-              view
+              view{" "}
             </Link>
-                /
+                |
             <Link to= {"/edit/"+item.text}>
-              edit
+              {" "}edit{" "}
+            </Link>
+                |
+            <Link to= {"/build/"+item.text}>
+                {" "}build
             </Link>
           </li>
         ))}
