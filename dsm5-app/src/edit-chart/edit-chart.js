@@ -129,6 +129,10 @@ const EditChart = ({treeName}) => {
 
     await dsDigger.addChildren(parentId, nodes)
     setDS({ ...dsDigger.ds })
+
+    //refresh to get database ids
+    window.location.reload()
+
     //console.log("[...selectedNodes][0].id"+[...selectedNodes][0].id)
     //console.log({ ...dsDigger.ds })
     
@@ -139,15 +143,19 @@ const EditChart = ({treeName}) => {
     console.log("adding SiblingNodes")
     await dsDigger.addSiblings([...selectedNodes][0].id, getNewNodes());
     setDS({ ...dsDigger.ds });
+    //refresh to get database ids
+    window.location.reload()
   };
 
   const addRootNode = () => {
+
     console.log("adding RootNode")
     dsDigger.addRoot(getNewNodes()[0]);
     setDS({ ...dsDigger.ds });
     console.log({...dsDigger.ds})
     console.log({...dsDigger.ds}.name)
     console.log({...dsDigger.ds}.title)
+
     axios
     .post(api+"/node",{name:{...dsDigger.ds}.name, "title":{...dsDigger.ds}.title })
     .then(response =>{ 
@@ -158,6 +166,9 @@ const EditChart = ({treeName}) => {
       console.log("saved root node")
     })
     .catch(error => console.log(error))
+
+    //refresh to get database id
+    window.location.reload()
   };
 
   const remove = async () => {
