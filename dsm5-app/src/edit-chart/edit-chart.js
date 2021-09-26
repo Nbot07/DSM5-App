@@ -40,7 +40,7 @@ const EditChart = ({treeName}) => {
         if (!tree.root){ console.log("The root node is "+tree.root)}
         else{
           var myNode = tree.root
-          myNode.children = []
+          
           //Object.assign(datasource, myNode)
           setDS(myNode) //causes infinite loop
           // while(myNode !== null){
