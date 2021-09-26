@@ -75,19 +75,19 @@ const EditChart = ({treeName}) => {
   };
 
   const onNameChange = (e, index) => {
-    console.log("onNameChange(e.target.value, index) (" +
-      e.target.value + 
-      ", " + index + 
-      ")")
+      // console.log("onNameChange(e.target.value, index) (" +
+      // e.target.value + 
+      // ", " + index + 
+      // ")")
     newNodes[index].name = e.target.value;
     setNewNodes([...newNodes]);
   };
 
   const onTitleChange = (e, index) => {
-    console.log("onTitleChange(e.target.value, index) (" +
-      e.target.value + 
-      ", " + index + 
-      ")")
+    // console.log("onTitleChange(e.target.value, index) (" +
+    //   e.target.value + 
+    //   ", " + index + 
+    //   ")")
     newNodes[index].title = e.target.value;
     setNewNodes([...newNodes]);
   };
@@ -116,8 +116,23 @@ const EditChart = ({treeName}) => {
 
   const addChildNodes = async () => {
     console.log("adding ChildNodes")
-    await dsDigger.addChildren([...selectedNodes][0].id, getNewNodes());
-    setDS({ ...dsDigger.ds });
+    const nodes = getNewNodes()
+    const parentId = [...selectedNodes][0].id
+    console.log(parentId)
+    //nodes.forEach(newNode => console.log("getNewNodes() name = "+ newNode.name + ", title = "+ newNode.title))
+    axios.post(api+"/node/"+parentId, nodes)
+    .then(response => {
+      console.log("successfully saved child nodes") 
+      console.log(response)
+    })
+    .catch(error => console.log(error))
+
+    await dsDigger.addChildren(parentId, nodes)
+    setDS({ ...dsDigger.ds })
+    //console.log("[...selectedNodes][0].id"+[...selectedNodes][0].id)
+    //console.log({ ...dsDigger.ds })
+    
+    //getNewNodes().forEach(newNode => console.log("getNewNodes()2 name = "+ newNode.name + ", title = "+ newNode.title))
   };
 
   const addSiblingNodes = async () => {

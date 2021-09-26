@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +23,24 @@ public class NodeController {
 	NodeRepo nodeRepo;
 	
 	@PostMapping
-	public int makeNode(@RequestBody Node node) {
+	public int saveNode(@RequestBody Node node) {
 		return nodeRepo.save(node).getId();
+	}
+	
+	@PostMapping("/{id}")
+	public void appendChildNodes(@PathVariable int id, @RequestBody List<Node> nodes) {
+		Node parentNode = getNode(id);
+		parentNode.getChildren().addAll(nodes);
+		saveNode(parentNode);
 	}
 	
 	@GetMapping
 	public List<Node> getAllNodes(){
 		return nodeRepo.findAll();
+	}
+	
+	@GetMapping("/{id}")
+	public Node getNode(@PathVariable int id) {
+		return nodeRepo.getById(id);
 	}
 }
