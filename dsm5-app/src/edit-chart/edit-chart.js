@@ -40,7 +40,7 @@ const EditChart = ({treeName}) => {
         if (!tree.root){ console.log("The root node is "+tree.root)}
         else{
           var myNode = tree.root
-          
+
           //Object.assign(datasource, myNode)
           setDS(myNode) //causes infinite loop
           // while(myNode !== null){
@@ -137,14 +137,46 @@ const EditChart = ({treeName}) => {
     //console.log({ ...dsDigger.ds })
     
     //getNewNodes().forEach(newNode => console.log("getNewNodes()2 name = "+ newNode.name + ", title = "+ newNode.title))
-  };
+  }
+
+  const getParentId = (childId) => {
+    console.log("childId = " +childId)
+    var queue = [ds]
+    while(queue.length > 0){
+      const children = queue[0].children
+      console.log("children = "+queue[0].children.name)
+      children.forEach(child => queue.push(child))
+      console.log("children.length = "+children.length)
+      for (let i = 0; i < children.length; i++){
+        console.log("checking child "+children[i].id)
+        if (children[i].id === childId) {return queue[0].id}
+      }
+      queue.shift()
+    }
+  }
 
   const addSiblingNodes = async () => {
+
     console.log("adding SiblingNodes")
-    await dsDigger.addSiblings([...selectedNodes][0].id, getNewNodes());
+    const child = [...selectedNodes][0]
+    const childId = child.id
+    const newNodes = getNewNodes()
+
+    await dsDigger.addSiblings(childId, newNodes);
     setDS({ ...dsDigger.ds });
+    console.log({ ...dsDigger.ds })
+
+    console.log("the parent of "+childId +" is "+ getParentId(childId))
+
+    // axios.post(api+"/node/"+getParentId(childId, nodes), newNodes)
+    // .then(response => {
+    //   console.log("successfully saved child nodes") 
+    //   console.log(response)
+    // })
+    // .catch(error => console.log(error))
+
     //refresh to get database ids
-    window.location.reload()
+    //window.location.reload()
   };
 
   const addRootNode = () => {
