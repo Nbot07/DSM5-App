@@ -145,7 +145,8 @@ const EditChart = ({treeName}) => {
     while(queue.length > 0){
       const children = queue[0].children
       console.log("children = "+queue[0].children.name)
-      children.forEach(child => queue.push(child))
+      queue.push(...children)
+      //children.forEach(child => queue.push(child))
       console.log("children.length = "+children.length)
       for (let i = 0; i < children.length; i++){
         console.log("checking child "+children[i].id)
@@ -168,15 +169,15 @@ const EditChart = ({treeName}) => {
 
     console.log("the parent of "+childId +" is "+ getParentId(childId))
 
-    // axios.post(api+"/node/"+getParentId(childId, nodes), newNodes)
-    // .then(response => {
-    //   console.log("successfully saved child nodes") 
-    //   console.log(response)
-    // })
-    // .catch(error => console.log(error))
+    axios.post(api+"/node/"+getParentId(childId), newNodes)
+    .then(response => {
+      console.log("successfully saved sibling nodes") 
+      console.log(response)
+    })
+    .catch(error => console.log(error))
 
-    //refresh to get database ids
-    //window.location.reload()
+    // refresh to get database ids
+    window.location.reload()
   };
 
   const addRootNode = () => {
