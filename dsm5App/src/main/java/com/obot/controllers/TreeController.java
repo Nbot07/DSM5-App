@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.obot.models.Node;
 import com.obot.models.Tree;
 import com.obot.repos.NodeRepo;
 import com.obot.repos.TreeRepo;
@@ -50,7 +51,17 @@ public class TreeController {
 	
 	@DeleteMapping("/{name}")
 	public void deleteTree(@PathVariable String name) {
+		deleteNode(getTree(name).getRoot().getId());
 		treeRepo.delete(getTree(name));
+	}
+	
+
+	public void deleteNode(int id) {
+		Node node = nodeRepo.getById(id);
+		List<Node> children = node.getChildren();
+		if (!children.isEmpty()) 
+			children.forEach(child -> deleteNode(child.getId()));
+		nodeRepo.deleteById(id);
 	}
 	
 }
