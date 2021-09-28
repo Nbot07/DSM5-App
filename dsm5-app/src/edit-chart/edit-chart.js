@@ -327,6 +327,7 @@ const EditChart = ({treeName}) => {
         multipleSelect={isMultipleSelect}
         onClickNode={readSelectedNode}
         onClickChart={clearSelectedNode}
+        draggable={true}
       />
     </div>
   );

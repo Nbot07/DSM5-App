@@ -43,7 +43,7 @@ public class TreeController {
 	}
 	
 	@RequestMapping("/{name}/{id}")
-	public void setRoot(@PathVariable String name, @PathVariable int id) {
+	public void setRoot(@PathVariable String name, @PathVariable String id) {
 		Tree temp = getTree(name);
 		temp.setRoot(nodeRepo.getById(id));
 		makeTree(temp);
@@ -56,7 +56,7 @@ public class TreeController {
 	}
 	
 
-	public void deleteNode(int id) {
+	public void deleteNode(String id) {
 		Node node = nodeRepo.getById(id);
 		List<Node> children = node.getChildren();
 		if (!children.isEmpty()) 

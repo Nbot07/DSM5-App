@@ -4,13 +4,11 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,10 +25,12 @@ import lombok.Setter;
 public class Node {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	//@ManyToOne(targetEntity = "node_children")
-	int id;
+	@GenericGenerator(name = "node_id", strategy = "com.obot.generators.NodeIdGenerator")
+    @GeneratedValue(generator = "node_id") 
+	String id;
 	
 	String name;
 	String title;

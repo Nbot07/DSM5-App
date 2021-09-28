@@ -24,12 +24,12 @@ public class NodeController {
 	NodeRepo nodeRepo;
 	
 	@PostMapping
-	public int saveNode(@RequestBody Node node) {
+	public String saveNode(@RequestBody Node node) {
 		return nodeRepo.save(node).getId();
 	}
 	
 	@PostMapping("/{id}")
-	public void appendChildNodes(@PathVariable int id, @RequestBody List<Node> nodes) {
+	public void appendChildNodes(@PathVariable String id, @RequestBody List<Node> nodes) {
 		nodes.forEach(child -> saveNode(child));
 		Node parentNode = getNode(id);
 		parentNode.getChildren().addAll(nodes);
@@ -42,16 +42,16 @@ public class NodeController {
 	}
 	
 	@GetMapping("/{id}")
-	public Node getNode(@PathVariable int id) {
+	public Node getNode(@PathVariable String id) {
 		return nodeRepo.getById(id);
 	}
 	
 	@DeleteMapping("/{ids}")
-	public void deleteNodes(@PathVariable List<Integer> ids) {
+	public void deleteNodes(@PathVariable List<String> ids) {
 		ids.forEach(id -> deleteNode(id));
 	}
 
-	public void deleteNode(int id) {
+	public void deleteNode(String id) {
 		Node node = getNode(id);
 		List<Node> children = node.getChildren();
 		if (!children.isEmpty()) 
