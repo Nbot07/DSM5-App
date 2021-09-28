@@ -225,10 +225,6 @@ const EditChart = ({treeName}) => {
     axios.delete(api+"/node/"+nodeIds)
       .then(console.log("removed nodes "+nodeIds))
       .catch(error => console.log(error))
-
-    //refresh to get database ids
-    //window.location.reload()
-
   };
 
   const onMultipleSelectChange = e => {

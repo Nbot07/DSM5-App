@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,7 @@ public class NodeController {
 	
 	@PostMapping("/{id}")
 	public void appendChildNodes(@PathVariable int id, @RequestBody List<Node> nodes) {
+		nodes.forEach(child -> saveNode(child));
 		Node parentNode = getNode(id);
 		parentNode.getChildren().addAll(nodes);
 		saveNode(parentNode);
@@ -42,5 +44,18 @@ public class NodeController {
 	@GetMapping("/{id}")
 	public Node getNode(@PathVariable int id) {
 		return nodeRepo.getById(id);
+	}
+	
+	@DeleteMapping("/{ids}")
+	public void deleteNodes(@PathVariable List<Integer> ids) {
+		ids.forEach(id -> deleteNode(id));
+	}
+
+	public void deleteNode(int id) {
+		Node node = getNode(id);
+		List<Node> children = node.getChildren();
+		if (!children.isEmpty()) 
+			children.forEach(child -> deleteNode(child.getId()));
+		nodeRepo.deleteById(id);
 	}
 }
