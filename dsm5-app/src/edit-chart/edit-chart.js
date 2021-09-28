@@ -200,15 +200,35 @@ const EditChart = ({treeName}) => {
     })
     .catch(error => console.log(error))
 
-    //refresh to get database id
+    //refresh to get database ids
     window.location.reload()
   };
 
   const remove = async () => {
+
     console.log("calling remove")
+
+    console.log(selectedNodes )
+  
     await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
     setDS({ ...dsDigger.ds });
+
+    var entries = selectedNodes.entries()
+    var nodeIds = ""+entries.next().value[0].id
+    console.log(nodeIds)
+    for(let i = 1; i < selectedNodes.length; i++){
+      nodeIds = nodeIds + ","+entries.next().value[0].id
+      console.log(nodeIds)
+    }
     setSelectedNodes(new Set());
+    
+    axios.delete(api+"/node/"+nodeIds)
+      .then(console.log("removed nodes "+nodeIds))
+      .catch(error => console.log(error))
+
+    //refresh to get database ids
+    //window.location.reload()
+
   };
 
   const onMultipleSelectChange = e => {
