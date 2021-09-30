@@ -17,7 +17,7 @@ import com.obot.models.Tree;
 import com.obot.repos.NodeRepo;
 import com.obot.repos.TreeRepo;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://192.168.1.46:3000")
 @RestController
 @RequestMapping("/tree")
 public class TreeController {

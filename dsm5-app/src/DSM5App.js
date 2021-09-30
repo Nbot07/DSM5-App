@@ -1,8 +1,8 @@
 import axios from "axios";
 import TreeList from "./TreeList";
 import React from 'react';
+import api from "./Api";
 
-var api = "http://localhost:8081"
 class DSM5App extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +37,7 @@ class DSM5App extends React.Component {
     return (
       <div>
         <h3>Trees</h3>
-        <TreeList items={this.state.items} />
+        <TreeList items={this.state.items} api={api}/>
         <form>
           <label htmlFor="new-todo">
             Type in tree name

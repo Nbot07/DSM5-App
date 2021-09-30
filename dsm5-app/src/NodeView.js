@@ -2,13 +2,14 @@ import { useParams } from "react-router";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import api from "./Api";
 
 const NodeView = () => {
     const [node, setNode] = useState({})
     const { id } = useParams();
 
     useEffect(() => {
-        axios.get("http://localhost:8081/node/"+id)
+        axios.get(api+"/node/"+id)
         .then(response => {
           setNode(response.data)
         })
