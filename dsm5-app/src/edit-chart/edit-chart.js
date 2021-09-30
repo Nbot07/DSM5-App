@@ -276,7 +276,7 @@ const EditChart = ({treeName}) => {
                   />
                   <input
                     type="text"
-                    placeholder="title"
+                    placeholder="description"
                     value={node.title}
                     onChange={e => onTitleChange(e, index)}
                   />
