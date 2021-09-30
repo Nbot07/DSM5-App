@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import OrganizationChart from "../components/ChartContainer";
 import "./edit-chart.css";
 import axios from "axios";
-import { useParams } from "react-router";
 
 var api = "http://localhost:8081"
 const EditChart = ({treeName}) => {

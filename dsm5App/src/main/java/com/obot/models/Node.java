@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class Node {
 	//@Cascade({CascadeType.ALL})
 	//@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "node_id")
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	List<Node> children;
 //	String description;
 //	@OneToMany(mappedBy="parent")
