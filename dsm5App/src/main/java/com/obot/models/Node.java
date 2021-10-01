@@ -29,8 +29,8 @@ public class Node {
 	//@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	//@ManyToOne(targetEntity = "node_children")
-	@GenericGenerator(name = "node_id", strategy = "com.obot.generators.NodeIdGenerator")
-    @GeneratedValue(generator = "node_id") 
+	@GenericGenerator(name = "nodeIdGenerator", strategy = "com.obot.generators.NodeIdGenerator")
+    @GeneratedValue(generator = "nodeIdGenerator") 
 	String id;
 	
 	String name;
@@ -40,7 +40,7 @@ public class Node {
 	//@JoinTable(name = "node", joinColumns = @JoinColumn(name = "node_id"), inverseJoinColumns = @JoinColumn(name = "id"))
 	//@Cascade({CascadeType.ALL})
 	//@OnDelete(action = OnDeleteAction.CASCADE)
-	@JoinColumn(name = "node_id")
+	@JoinColumn(name = "parent_id")
 	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	List<Node> children;
 //	String description;
