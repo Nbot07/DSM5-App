@@ -119,23 +119,17 @@ const EditChart = ({treeName}) => {
     const parentId = [...selectedNodes][0].id
     console.log(parentId)
     //nodes.forEach(newNode => console.log("getNewNodes() name = "+ newNode.name + ", title = "+ newNode.title))
+    await dsDigger.addChildren(parentId, nodes)
+    setDS({ ...dsDigger.ds })
+
     axios.post(api+"/node/"+parentId, nodes)
     .then(response => {
       console.log("successfully saved child nodes") 
       console.log(response)
+      //refresh to get database ids
+      window.location.reload()
     })
     .catch(error => console.log(error))
-
-    await dsDigger.addChildren(parentId, nodes)
-    setDS({ ...dsDigger.ds })
-
-    //refresh to get database ids
-    window.location.reload()
-
-    //console.log("[...selectedNodes][0].id"+[...selectedNodes][0].id)
-    //console.log({ ...dsDigger.ds })
-    
-    //getNewNodes().forEach(newNode => console.log("getNewNodes()2 name = "+ newNode.name + ", title = "+ newNode.title))
   }
 
   const getParentId = (childId) => {
@@ -172,11 +166,10 @@ const EditChart = ({treeName}) => {
     .then(response => {
       console.log("successfully saved sibling nodes") 
       console.log(response)
+      // refresh to get database ids
+      window.location.reload()
     })
     .catch(error => console.log(error))
-
-    // refresh to get database ids
-    window.location.reload()
   };
 
   const addRootNode = () => {
@@ -193,14 +186,16 @@ const EditChart = ({treeName}) => {
     .then(response =>{ 
       console.log(response.data)
       axios.post(api+"/tree/"+treeName+"/"+response.data)
-      .then(console.log("set root of "+ treeName+ "to Node "+ response.data))
+      .then(() => {console.log("set root of "+ treeName+ "to Node "+ response.data)
+        window.location.reload()}
+      )
       .catch(error => console.log(error))
       console.log("saved root node")
     })
     .catch(error => console.log(error))
 
     //refresh to get database ids
-    window.location.reload()
+    //
   };
 
   const remove = async () => {
