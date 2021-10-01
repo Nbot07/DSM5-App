@@ -33,32 +33,6 @@ class DSM5App extends React.Component {
     });
   }
 
-  render() {
-    return (
-      <div>
-        <h3>Trees</h3>
-        <TreeList items={this.state.items} api={api}/>
-        <form>
-          <label htmlFor="new-todo">
-            Type in tree name
-          </label>
-          <input
-            id="new-todo"
-            onChange={this.handleChange}
-            value={this.state.text}
-          />
-          <button onClick={this.handleSubmit}>
-            Create Tree #{this.state.items.length + 1}
-          </button>
-          :
-          <button onClick={this.handleDelete}>
-            Delete Tree
-          </button>
-        </form>
-      </div>
-    );
-  }
-
   handleChange(e) {
     this.setState({ text: e.target.value });
   }
@@ -91,7 +65,7 @@ class DSM5App extends React.Component {
 
   handleDelete(e){
     e.preventDefault()
-    var text = this.state.text
+    const text = this.state.text
     axios.delete(api + "/tree/"+text,)
     .then(resp => {
       console.log(resp.data);
@@ -100,7 +74,50 @@ class DSM5App extends React.Component {
     .catch(error => {
         console.log("error failed to delete tree")
     })
-    window.location.reload();
+
+    var liTags = document.getElementsByTagName("li");
+    var searchText = text+" view | build";
+    var found;
+
+    //console.log("liTags =")
+    //console.log(liTags)
+    for (var i = 0; i < liTags.length; i++) {
+      //console.log("text = "+ liTags[i].textContent)
+      if (liTags[i].textContent == searchText) {
+        found = liTags[i];
+        break;
+      }
+    }
+
+    if(found) {
+      found.remove()
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <h3>Trees</h3>
+        <TreeList items={this.state.items} api={api}/>
+        <form>
+          <label htmlFor="new-todo">
+            Type in tree name
+          </label>
+          <input
+            id="new-todo"
+            onChange={this.handleChange}
+            value={this.state.text}
+          />
+          <button onClick={this.handleSubmit}>
+            Create Tree #{this.state.items.length + 1}
+          </button>
+          :
+          <button onClick={this.handleDelete}>
+            Delete Tree
+          </button>
+        </form>
+      </div>
+    );
   }
 }
 
