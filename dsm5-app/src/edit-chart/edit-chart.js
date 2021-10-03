@@ -36,7 +36,11 @@ const EditChart = ({treeName}) => {
   
     const initItems = (tree) => {
       console.log("tree.root = " + tree.root)
-        if (!tree.root){console.log("The root node is "+tree.root)}
+        if (!tree.root){
+          console.log("The root node is "+tree.root)
+          console.log(ds)
+          console.log(ds.id)
+        }
         else{
           var myNode = tree.root
           console.log("The root node is ")
@@ -120,6 +124,7 @@ const EditChart = ({treeName}) => {
 
   const addChildNodes = async () => {
     console.log("adding ChildNodes")
+    if (typeof ds.id === "undefined") return;
     const nodes = getNewNodes()
     const parentId = [...selectedNodes][0].id
     console.log(parentId)
@@ -157,6 +162,7 @@ const EditChart = ({treeName}) => {
   const addSiblingNodes = async () => {
 
     console.log("adding SiblingNodes")
+    if (typeof ds.id === "undefined") return;
     const child = [...selectedNodes][0]
     const childId = child.id
     const newNodes = getNewNodes()
@@ -180,6 +186,8 @@ const EditChart = ({treeName}) => {
   const addRootNode = () => {
 
     console.log("adding RootNode")
+    console.log(typeof ds.id)
+    if (typeof ds.id !== "undefined") return;
     dsDigger.addRoot(getNewNodes()[0]);
     setDS({ ...dsDigger.ds });
     console.log({...dsDigger.ds})
@@ -192,24 +200,23 @@ const EditChart = ({treeName}) => {
       console.log(response.data)
       axios.post(api+"/tree/"+treeName+"/"+response.data)
       .then(() => {console.log("set root of "+ treeName+ "to Node "+ response.data)
+        //refresh to get database ids
         window.location.reload()}
       )
       .catch(error => console.log(error))
       console.log("saved root node")
     })
     .catch(error => console.log(error))
-
-    //refresh to get database ids
-    //
   };
 
   const remove = async () => {
 
     console.log("calling remove")
-
+    if (typeof ds.id === "undefined") return;
     console.log(selectedNodes )
     console.log(ds)
     console.log(ds.children)
+    if (!ds) return;
     if (ds.children.length !== 0){
       await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
       setDS({ ...dsDigger.ds });
