@@ -23,15 +23,22 @@ public Serializable generate(SharedSessionContractImplementor session, Object ob
     try {
         Statement statement=connection.createStatement();
 
-        ResultSet rs=statement.executeQuery("select count(id) as Id from Node");
-
-        if(rs.next())
-        {
-            int id=rs.getInt(1)+101;
-            System.out.println("The id = "+id);
-            String generatedId = prefix + new Integer(id).toString();
-            return generatedId;
+        ResultSet rs=statement.executeQuery("select id from Node");
+        String id = "";
+        while(rs.next()) {
+        	id=rs.getString(1);
         }
+        int idNum = id != "" ? Integer.valueOf(id.substring(1)) + 1: 1;
+        String generatedId = prefix + new Integer(idNum).toString();
+        System.out.println("The id = "+ generatedId);
+        return generatedId;
+//        if(rs.next())
+//        {
+//            int id=rs.getInt(1)+101;
+//            System.out.println("The id = "+id);
+//            String generatedId = prefix + new Integer(id).toString();
+//            return generatedId;
+//        }
     } catch (SQLException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
