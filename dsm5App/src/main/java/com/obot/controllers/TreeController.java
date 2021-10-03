@@ -57,7 +57,15 @@ public class TreeController {
 		treeRepo.delete(getTree(name));
 	}
 	
-
+	@DeleteMapping("/root/{name}")
+	public void deleteRoot(@PathVariable String name){
+		Tree tree = getTree(name);
+		String id = tree.getRoot().getId();
+		tree.setRoot(null);
+		treeRepo.save(tree);
+		deleteNode(id);
+	}
+	
 	public void deleteNode(String id) {
 		Node node = nodeRepo.getById(id);
 		List<Node> children = node.getChildren();

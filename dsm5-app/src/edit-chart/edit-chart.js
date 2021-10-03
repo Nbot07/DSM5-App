@@ -208,22 +208,31 @@ const EditChart = ({treeName}) => {
     console.log("calling remove")
 
     console.log(selectedNodes )
-  
-    await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
-    setDS({ ...dsDigger.ds });
+    console.log(ds)
+    console.log(ds.children)
+    if (ds.children.length !== 0){
+      await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
+      setDS({ ...dsDigger.ds });
 
-    var entries = selectedNodes.entries()
-    var nodeIds = ""+entries.next().value[0].id
-    console.log(nodeIds)
-    for(let i = 1; i < selectedNodes.length; i++){
-      nodeIds = nodeIds + ","+entries.next().value[0].id
+      var entries = selectedNodes.entries()
+      var nodeIds = ""+entries.next().value[0].id
       console.log(nodeIds)
-    }
-    setSelectedNodes(new Set());
-    
-    axios.delete(api+"/node/"+nodeIds)
+      for(let i = 1; i < selectedNodes.length; i++){
+        nodeIds = nodeIds + ","+entries.next().value[0].id
+        console.log(nodeIds)
+      }
+
+      axios.delete(api+"/node/"+nodeIds)
       .then(console.log("removed nodes "+nodeIds))
       .catch(error => console.log(error))
+    }else{
+      setDS({})
+      axios.delete(api+"/tree/root/"+treeName)
+      .then(console.log("removed root node of "+treeName+" tree"))
+      .catch(error => console.log(error))
+    }
+
+    setSelectedNodes(new Set());
   };
 
   const onMultipleSelectChange = e => {
