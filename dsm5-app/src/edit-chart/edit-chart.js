@@ -157,14 +157,17 @@ const EditChart = ({treeName}) => {
       }
       queue.shift()
     }
+    return -1;
   }
 
   const addSiblingNodes = async () => {
 
     console.log("adding SiblingNodes")
     if (typeof ds.id === "undefined") return;
+    
     const child = [...selectedNodes][0]
     const childId = child.id
+    if (getParentId(childId) === -1) return;
     const newNodes = getNewNodes()
 
     await dsDigger.addSiblings(childId, newNodes);
