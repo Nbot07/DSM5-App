@@ -36,10 +36,11 @@ const EditChart = ({treeName}) => {
   
     const initItems = (tree) => {
       console.log("tree.root = " + tree.root)
-        if (!tree.root){ console.log("The root node is "+tree.root)}
+        if (!tree.root){console.log("The root node is "+tree.root)}
         else{
           var myNode = tree.root
-
+          console.log("The root node is ")
+          console.log(tree.root)
           //Object.assign(datasource, myNode)
           setDS(myNode) //causes infinite loop
           // while(myNode !== null){
@@ -100,6 +101,10 @@ const EditChart = ({treeName}) => {
     console.log("removing newNode " + index)
     setNewNodes(prevNewNodes => {
       prevNewNodes.splice(index, 1);
+      if (newNodes.length === 0){
+        setNewNodes([{ name: "", title: "" }])
+        return newNodes
+      }
       return [...prevNewNodes];
     });
   };
