@@ -221,22 +221,25 @@ const EditChart = ({treeName}) => {
     console.log(ds.children)
     if (!ds) return;
     if (ds.children.length !== 0){
-      await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
-      setDS({ ...dsDigger.ds });
-
-      // var entries = selectedNodes.entries()
-      // var nodeIds = ""+entries.next().value[0].id
-      // console.log(nodeIds)
-      // for(let i = 1; i < selectedNodes.length; i++){
-      //   nodeIds = nodeIds + ","+entries.next().value[0].id
-      //   console.log(nodeIds)
-      // }
-
+      var root = null
       selectedNodes.forEach(node => {
-        axios.delete(api+"/node/"+node.id)
-        .then(console.log("removed nodes "+node.id))
+        if (node.id === ds.id) root = node;
+      });
+
+      if (root){
+        //await dsDigger.removeNodes(root.id)
+        setDS({})
+        axios.delete(api+"/tree/root/"+treeName)
+        .then(console.log("removed root node of "+treeName+" tree"))
         .catch(error => console.log(error))
-      })
+      }else{
+        await dsDigger.removeNodes([...selectedNodes].map(node => node.id));
+        setDS({ ...dsDigger.ds });
+        selectedNodes.forEach(node => {
+          axios.delete(api+"/node/"+node.id)
+          .then(console.log("removed nodes "+node.id))
+          .catch(error => console.log(error))
+      })}
     }else{
       setDS({})
       axios.delete(api+"/tree/root/"+treeName)
