@@ -24,12 +24,16 @@ public Serializable generate(SharedSessionContractImplementor session, Object ob
         Statement statement=connection.createStatement();
 
         ResultSet rs=statement.executeQuery("select id from Node");
+        int max = 0;
         String id = "";
         while(rs.next()) {
         	id=rs.getString(1);
+        	int idNum = Integer.valueOf(id.substring(1));
+        	if (idNum > max)
+        		max = idNum;
         }
-        int idNum = id != "" ? Integer.valueOf(id.substring(1)) + 1: 1;
-        String generatedId = prefix + new Integer(idNum).toString();
+        //int idNum = id != "" ? Integer.valueOf(id.substring(1)) + 1: 1;
+        String generatedId = prefix + new Integer(max + 1).toString();
         System.out.println("The id = "+ generatedId);
         return generatedId;
 //        if(rs.next())
