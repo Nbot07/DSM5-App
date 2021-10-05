@@ -17,6 +17,8 @@ const EditChart = ({treeName}) => {
   const [newNodes, setNewNodes] = useState([{ name: "", title: "" }]);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isMultipleSelect, setIsMultipleSelect] = useState(false);
+  const [newNodeName, setNewNodeName] = useState("");
+  const [newNodeTitle, setNewNodeTitle] = useState("");
 
   console.log("treeName = "+ treeName )
   useEffect(() => {
@@ -85,6 +87,7 @@ const EditChart = ({treeName}) => {
       // ")")
     newNodes[index].name = e.target.value;
     setNewNodes([...newNodes]);
+    setNewNodeName(e.target.value)
   };
 
   const onTitleChange = (e, index) => {
@@ -94,6 +97,7 @@ const EditChart = ({treeName}) => {
     //   ")")
     newNodes[index].title = e.target.value;
     setNewNodes([...newNodes]);
+    setNewNodeTitle(e.target.value)
   };
 
   const addNewNode = () => {
@@ -252,6 +256,11 @@ const EditChart = ({treeName}) => {
     setSelectedNodes(new Set());
   };
 
+  const updateNodes = async () => {
+    console.log("updateNodes")
+    
+  };
+
   const onMultipleSelectChange = e => {
     console.log("onMultipleSelectChange")
     setIsMultipleSelect(e.target.checked);
@@ -334,6 +343,9 @@ const EditChart = ({treeName}) => {
           </button>
           <button disabled={!isEditMode} onClick={remove}>
             Remove Nodes
+          </button>
+          <button disabled={!isEditMode} onClick={updateNodes}>
+            Update Nodes
           </button>
           <input
             style={{ marginLeft: "1rem" }}
