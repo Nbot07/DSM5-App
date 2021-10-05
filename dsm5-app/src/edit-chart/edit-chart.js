@@ -125,6 +125,7 @@ const EditChart = ({treeName}) => {
   const addChildNodes = async () => {
     console.log("adding ChildNodes")
     if (typeof ds.id === "undefined") return;
+    if ([...selectedNodes].length === 0 ) return;
     const nodes = getNewNodes()
     const parentId = [...selectedNodes][0].id
     console.log(parentId)
@@ -164,7 +165,7 @@ const EditChart = ({treeName}) => {
 
     console.log("adding SiblingNodes")
     if (typeof ds.id === "undefined") return;
-    
+    if ([...selectedNodes].length === 0 ) return;
     const child = [...selectedNodes][0]
     const childId = child.id
     if (getParentId(childId) === -1) return;
@@ -216,6 +217,7 @@ const EditChart = ({treeName}) => {
 
     console.log("calling remove")
     if (typeof ds.id === "undefined") return;
+    if ([...selectedNodes].length === 0 ) return;
     console.log(selectedNodes )
     console.log(ds)
     console.log(ds.children)
