@@ -258,7 +258,15 @@ const EditChart = ({treeName}) => {
 
   const updateNodes = async () => {
     console.log("updateNodes")
-    
+    if (typeof ds.id === "undefined") return;
+    if ([...selectedNodes].length === 0 ) return;
+    selectedNodes.forEach(node => 
+      axios.put(api+"/node/"+node.id, {name:newNodeName, title:newNodeTitle})
+      .then(response => {console.log("succeffully updated node")
+        console.log(response)})
+      )
+    await dsDigger.updateNodes([...selectedNodes].map(node => node.id), {name: newNodeName, title: newNodeTitle });
+    setDS({ ...dsDigger.ds });
   };
 
   const onMultipleSelectChange = e => {

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,14 @@ public class NodeController {
 		Node parentNode = getNode(id);
 		parentNode.getChildren().addAll(nodes);
 		saveNode(parentNode);
+	}
+	
+	@PutMapping("/{id}")
+	public void updateNode(@PathVariable String id, @RequestBody Node node) {
+		Node currentNode = getNode(id);
+		currentNode.setName(node.getName());
+		currentNode.setTitle(node.getTitle());
+		saveNode(currentNode);
 	}
 	
 	@GetMapping
