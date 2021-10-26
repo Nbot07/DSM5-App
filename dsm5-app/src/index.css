@@ -7,6 +7,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+nav{
+  background-color: #5cb85c;/*rgba(217, 83, 79, 0.8);*/
+  color: white;
+}
+
+nav a{
+  color:white;
+}
+
+#treelistcontainer{
+  align-content: stretch;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

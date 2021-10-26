@@ -96,9 +96,9 @@ class DSM5App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="treelistcontainer">
         <h3>Trees</h3>
-        <TreeList items={this.state.items} api={api}/>
+        <TreeList class="treelist" items={this.state.items} api={api}/>
         <form>
           <label htmlFor="new-todo">
             Type in tree name
